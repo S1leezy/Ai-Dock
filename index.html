@@ -7,796 +7,932 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg: #06080f;
-      --bg-secondary: #0f172a;
-      --card: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.12);
-      --text: #ffffff;
-      --muted: #94a3b8;
-      --primary: #3b82f6;
-      --primary-light: #60a5fa;
-      --shadow: 0 10px 40px rgba(0,0,0,0.35);
+    :root{
+      --bg:#050816;
+      --surface:rgba(255,255,255,0.04);
+      --surface-2:rgba(255,255,255,0.06);
+      --border:rgba(255,255,255,0.08);
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --primary:#3b82f6;
+      --primary-light:#60a5fa;
+      --shadow:0 20px 60px rgba(0,0,0,0.45);
+      --radius:24px;
+      --container:1180px;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
+    html{
+      scroll-behavior:smooth;
     }
 
-    body {
-      font-family: "Inter", sans-serif;
+    body{
+      font-family:"Inter",sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(96,165,250,0.12), transparent 30%),
+        radial-gradient(circle at top left, rgba(59,130,246,0.15), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(96,165,250,0.08), transparent 25%),
         var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
+      color:var(--text);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
 
-    .container {
-      width: 100%;
-      max-width: 1250px;
-      margin: auto;
-      padding: 0 24px;
+    .container{
+      width:100%;
+      max-width:var(--container);
+      margin:auto;
+      padding:0 24px;
     }
 
-    section {
-      padding: 110px 0;
-      position: relative;
+    section{
+      padding:120px 0;
+      position:relative;
     }
 
-    .glass {
-      background: var(--card);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
+    .glass{
+      background:var(--surface);
+      border:1px solid var(--border);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      box-shadow:var(--shadow);
     }
 
     /* NAVBAR */
 
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      padding: 18px 0;
-      backdrop-filter: blur(14px);
-      background: rgba(6,8,15,0.65);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+    nav{
+      position:fixed;
+      top:0;
+      width:100%;
+      z-index:1000;
+      transition:0.3s ease;
     }
 
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    nav.scrolled{
+      background:rgba(5,8,22,0.75);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(255,255,255,0.05);
     }
 
-    .logo {
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
+    .nav-inner{
+      height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
     }
 
-    .logo span {
-      color: var(--primary);
+    .logo{
+      font-size:1.15rem;
+      font-weight:700;
+      letter-spacing:-0.04em;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      align-items: center;
+    .logo span{
+      color:var(--primary);
     }
 
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-weight: 500;
-      transition: 0.25s ease;
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:28px;
     }
 
-    .nav-links a:hover {
-      color: white;
+    .nav-links a{
+      text-decoration:none;
+      color:var(--muted);
+      font-size:0.95rem;
+      transition:0.25s ease;
     }
 
-    .btn {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      color: white;
-      padding: 14px 26px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 8px 30px rgba(59,130,246,0.35);
+    .nav-links a:hover{
+      color:white;
     }
 
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 35px rgba(59,130,246,0.5);
+    .nav-btn{
+      padding:12px 18px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      color:white !important;
+    }
+
+    .nav-btn:hover{
+      background:rgba(255,255,255,0.1);
     }
 
     /* HERO */
 
-    .hero {
-      min-height: 92vh;
-      display: flex;
-      align-items: center;
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      padding-top:120px;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 60px;
-      align-items: center;
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:70px;
+      align-items:center;
     }
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      margin-bottom: 26px;
-      color: #dbeafe;
-      font-size: 0.9rem;
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 16px;
+      border-radius:999px;
+      margin-bottom:28px;
+      font-size:0.9rem;
+      color:#dbeafe;
     }
 
-    .hero-badge::before {
-      content: "";
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--primary);
-      box-shadow: 0 0 18px var(--primary);
+    .badge::before{
+      content:"";
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--primary);
+      box-shadow:0 0 14px var(--primary);
     }
 
-    .hero h1 {
-      font-size: clamp(3rem, 6vw, 5.6rem);
-      line-height: 1;
-      letter-spacing: -0.06em;
-      margin-bottom: 24px;
-      font-weight: 800;
+    h1{
+      font-size:clamp(3.5rem,6vw,5.8rem);
+      line-height:0.95;
+      letter-spacing:-0.07em;
+      margin-bottom:26px;
+      max-width:680px;
     }
 
-    .hero p {
-      font-size: 1.15rem;
-      line-height: 1.8;
-      color: var(--muted);
-      max-width: 640px;
-      margin-bottom: 36px;
+    .hero p{
+      color:var(--muted);
+      font-size:1.08rem;
+      line-height:1.9;
+      max-width:620px;
+      margin-bottom:38px;
     }
 
-    .hero-buttons {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
+    .hero-buttons{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
     }
 
-    .secondary-btn {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: none;
+    .btn{
+      padding:15px 24px;
+      border-radius:18px;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
     }
 
-    .secondary-btn:hover {
-      background: rgba(255,255,255,0.09);
+    .btn-primary{
+      background:linear-gradient(135deg,var(--primary),var(--primary-light));
+      color:white;
+      box-shadow:0 10px 30px rgba(59,130,246,0.35);
     }
 
-    /* APP MOCKUP */
-
-    .app-mockup {
-      border-radius: 28px;
-      padding: 24px;
-      position: relative;
-      overflow: hidden;
+    .btn-primary:hover{
+      transform:translateY(-3px);
+      box-shadow:0 14px 40px rgba(59,130,246,0.5);
     }
 
-    .window-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 22px;
+    .btn-secondary{
+      color:white;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    .window-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
+    .btn-secondary:hover{
+      background:rgba(255,255,255,0.08);
     }
 
-    .mockup-ui {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 18px;
+    /* MOCKUP */
+
+    .mockup{
+      padding:22px;
+      border-radius:30px;
+      position:relative;
+      overflow:hidden;
     }
 
-    .sidebar,
-    .main-ui {
-      border-radius: 20px;
-      padding: 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .sidebar-item {
-      height: 42px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .sidebar-item.active {
-      background: rgba(59,130,246,0.25);
-      border: 1px solid rgba(59,130,246,0.35);
-    }
-
-    .ui-top {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .ui-card {
-      height: 90px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .console {
-      height: 240px;
-      border-radius: 16px;
-      background: linear-gradient(
-        to bottom,
-        rgba(59,130,246,0.12),
-        rgba(255,255,255,0.03)
+    .mockup::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        transparent
       );
-      border: 1px solid rgba(255,255,255,0.05);
+      pointer-events:none;
     }
 
-    /* SECTION TITLES */
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 70px;
+    .window-top{
+      display:flex;
+      gap:10px;
+      margin-bottom:20px;
     }
 
-    .section-title h2 {
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      margin-bottom: 16px;
-      letter-spacing: -0.05em;
+    .dot{
+      width:11px;
+      height:11px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.18);
     }
 
-    .section-title p {
-      color: var(--muted);
-      max-width: 720px;
-      margin: auto;
-      line-height: 1.8;
-      font-size: 1.05rem;
+    .mockup-layout{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:18px;
+    }
+
+    .sidebar{
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .side-item{
+      height:42px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      margin-bottom:12px;
+    }
+
+    .side-item.active{
+      background:rgba(59,130,246,0.2);
+      border:1px solid rgba(59,130,246,0.3);
+    }
+
+    .dashboard{
+      padding:18px;
+      border-radius:22px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .dashboard-top{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .mini-card{
+      height:90px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.05);
+    }
+
+    .console{
+      height:260px;
+      border-radius:20px;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(59,130,246,0.12),
+          rgba(255,255,255,0.03)
+        );
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    /* TITLES */
+
+    .section-title{
+      text-align:center;
+      margin-bottom:70px;
+    }
+
+    .section-title h2{
+      font-size:clamp(2.2rem,4vw,3.5rem);
+      letter-spacing:-0.06em;
+      margin-bottom:18px;
+    }
+
+    .section-title p{
+      color:var(--muted);
+      max-width:650px;
+      margin:auto;
+      line-height:1.8;
     }
 
     /* FEATURES */
 
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:22px;
     }
 
-    .feature-card {
-      padding: 30px;
-      border-radius: 24px;
-      transition: 0.3s ease;
-      position: relative;
-      overflow: hidden;
+    .feature-card{
+      padding:30px;
+      border-radius:24px;
+      transition:0.35s ease;
     }
 
-    .feature-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(59,130,246,0.35);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+    .feature-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(59,130,246,0.2);
+      background:rgba(255,255,255,0.055);
     }
 
-    .feature-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: rgba(59,130,246,0.18);
-      border: 1px solid rgba(59,130,246,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 22px;
+    .icon{
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:20px;
+      font-size:1.25rem;
+      background:rgba(59,130,246,0.15);
+      border:1px solid rgba(59,130,246,0.2);
     }
 
-    .feature-card h3 {
-      margin-bottom: 14px;
-      font-size: 1.2rem;
+    .feature-card h3{
+      font-size:1.1rem;
+      margin-bottom:12px;
     }
 
-    .feature-card p {
-      color: var(--muted);
-      line-height: 1.7;
+    .feature-card p{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:0.96rem;
     }
 
     /* STEPS */
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:22px;
     }
 
-    .step-card {
-      padding: 34px;
-      border-radius: 24px;
-      text-align: center;
+    .step{
+      padding:34px;
+      border-radius:24px;
+      text-align:center;
     }
 
-    .step-number {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      margin: 0 auto 24px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 800;
-      box-shadow: 0 10px 30px rgba(59,130,246,0.35);
+    .step-number{
+      width:66px;
+      height:66px;
+      border-radius:50%;
+      margin:0 auto 22px;
+      background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-light)
+      );
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:1.3rem;
+      box-shadow:0 10px 30px rgba(59,130,246,0.35);
     }
 
-    .step-card p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin-top: 12px;
+    .step p{
+      margin-top:12px;
+      color:var(--muted);
+      line-height:1.7;
     }
 
-    /* SYSTEM REQUIREMENTS */
+    /* REQUIREMENTS */
 
-    .requirements {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+    .requirements{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:22px;
     }
 
-    .req-card {
-      padding: 30px;
-      border-radius: 22px;
+    .req{
+      padding:28px;
+      border-radius:22px;
     }
 
-    .req-card h3 {
-      margin-bottom: 14px;
+    .req h3{
+      margin-bottom:18px;
     }
 
-    .req-card ul {
-      list-style: none;
-      margin-top: 18px;
+    .req ul{
+      list-style:none;
     }
 
-    .req-card li {
-      color: var(--muted);
-      margin-bottom: 12px;
+    .req li{
+      color:var(--muted);
+      margin-bottom:10px;
+      font-size:0.95rem;
     }
 
     /* CTA */
 
-    .cta {
-      text-align: center;
-      padding: 70px 40px;
-      border-radius: 32px;
+    .cta{
+      padding:70px 40px;
+      border-radius:32px;
+      text-align:center;
     }
 
-    .cta h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 18px;
+    .cta h2{
+      font-size:clamp(2.3rem,4vw,3.4rem);
+      letter-spacing:-0.05em;
+      margin-bottom:18px;
     }
 
-    .cta p {
-      color: var(--muted);
-      max-width: 700px;
-      margin: auto auto 30px;
-      line-height: 1.8;
+    .cta p{
+      max-width:620px;
+      margin:auto auto 30px;
+      color:var(--muted);
+      line-height:1.8;
     }
 
     /* FOOTER */
 
-    footer {
-      padding: 40px 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      text-align: center;
-      color: var(--muted);
+    footer{
+      padding:40px 0;
+      border-top:1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .footer-text{
+      color:var(--muted);
+      font-size:0.92rem;
+    }
+
+    /* ANIMATIONS */
+
+    .reveal{
+      opacity:0;
+      transform:translateY(30px);
+      transition:0.8s ease;
+    }
+
+    .reveal.active{
+      opacity:1;
+      transform:translateY(0);
     }
 
     /* RESPONSIVE */
 
-    @media (max-width: 980px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
+    @media(max-width:980px){
+
+      .hero-grid{
+        grid-template-columns:1fr;
       }
 
-      .mockup-ui {
-        grid-template-columns: 1fr;
+      .mockup-layout{
+        grid-template-columns:1fr;
       }
 
-      .sidebar {
-        display: none;
+      .sidebar{
+        display:none;
       }
 
-      .hero {
-        padding-top: 40px;
+      section{
+        padding:100px 0;
       }
     }
 
-    @media (max-width: 700px) {
-      .nav-links {
-        display: none;
+    @media(max-width:720px){
+
+      .nav-links{
+        display:none;
       }
 
-      .hero h1 {
-        font-size: 3rem;
+      h1{
+        font-size:3.2rem;
       }
 
-      section {
-        padding: 90px 0;
+      .dashboard-top{
+        grid-template-columns:1fr;
       }
 
-      .ui-top {
-        grid-template-columns: 1fr;
+      .hero-buttons{
+        width:100%;
       }
 
-      .hero-buttons {
-        width: 100%;
+      .btn{
+        width:100%;
       }
 
-      .btn {
-        width: 100%;
+      .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
       }
     }
+
   </style>
 </head>
+
 <body>
 
-  <!-- NAVBAR -->
-  <nav>
+  <!-- NAV -->
+
+  <nav id="navbar">
     <div class="container nav-inner">
-      <div class="logo">Ai <span>Dock</span></div>
+
+      <div class="logo">
+        Ai <span>Dock</span>
+      </div>
 
       <div class="nav-links">
         <a href="#features">Features</a>
-        <a href="#how">How It Works</a>
+        <a href="#how">How it works</a>
         <a href="#requirements">Requirements</a>
-        <a href="#" class="btn">Download</a>
+        <a href="#" class="nav-btn">Download</a>
       </div>
+
     </div>
   </nav>
 
   <!-- HERO -->
+
   <section class="hero">
+
     <div class="container hero-grid">
 
-      <div>
-        <div class="hero-badge glass">
-          Modern AI-powered desktop experience
+      <div class="reveal">
+
+        <div class="badge glass">
+          Built for fast desktop workflows
         </div>
 
         <h1>
-          Your AI Workspace.<br />
-          Zero Hassle.
+          Everything you need.<br>
+          One clean desktop app.
         </h1>
 
         <p>
-          Ai Dock is a modern desktop application designed to make AI tools,
-          workflows, and automation simple for everyone. Launch tools instantly,
-          manage projects, organize tasks, and work faster — all from one
-          polished interface without complicated setup.
+          Ai Dock keeps your tools, workflows, and AI features in one focused workspace — without the clutter, browser tabs, or complicated setup.
         </p>
 
         <div class="hero-buttons">
-          <a href="#" class="btn">
-            Download Now
+
+          <a href="#" class="btn btn-primary">
+            Download for Windows
           </a>
 
-          <a href="#features" class="btn secondary-btn">
-            Explore Features
+          <a href="#features" class="btn btn-secondary">
+            View Features
           </a>
+
         </div>
+
       </div>
 
-      <div class="app-mockup glass">
-        <div class="window-bar">
-          <div class="window-dot"></div>
-          <div class="window-dot"></div>
-          <div class="window-dot"></div>
+      <div class="mockup glass reveal">
+
+        <div class="window-top">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
         </div>
 
-        <div class="mockup-ui">
+        <div class="mockup-layout">
+
           <div class="sidebar">
-            <div class="sidebar-item active"></div>
-            <div class="sidebar-item"></div>
-            <div class="sidebar-item"></div>
-            <div class="sidebar-item"></div>
-            <div class="sidebar-item"></div>
+            <div class="side-item active"></div>
+            <div class="side-item"></div>
+            <div class="side-item"></div>
+            <div class="side-item"></div>
+            <div class="side-item"></div>
           </div>
 
-          <div class="main-ui">
-            <div class="ui-top">
-              <div class="ui-card"></div>
-              <div class="ui-card"></div>
-              <div class="ui-card"></div>
+          <div class="dashboard">
+
+            <div class="dashboard-top">
+              <div class="mini-card"></div>
+              <div class="mini-card"></div>
+              <div class="mini-card"></div>
             </div>
 
             <div class="console"></div>
+
           </div>
+
         </div>
+
       </div>
 
     </div>
+
   </section>
 
   <!-- FEATURES -->
+
   <section id="features">
+
     <div class="container">
 
-      <div class="section-title">
-        <h2>Everything You Need</h2>
+      <div class="section-title reveal">
+
+        <h2>
+          Designed to stay out of your way
+        </h2>
 
         <p>
-          Ai Dock combines modern design, powerful productivity tools,
-          and seamless AI integration into one clean desktop experience.
+          Ai Dock gives you a faster and more organized workspace without making things complicated.
         </p>
+
       </div>
 
-      <div class="features-grid">
+      <div class="features">
 
-        <div class="feature-card glass">
-          <div class="feature-icon">⚡</div>
-          <h3>Fast Performance</h3>
+        <div class="feature-card glass reveal">
+          <div class="icon">⚡</div>
+          <h3>Quick Launch</h3>
           <p>
-            Optimized desktop experience with smooth animations,
-            quick loading, and responsive controls.
+            Open your tools instantly without digging through folders or tabs.
           </p>
         </div>
 
-        <div class="feature-card glass">
-          <div class="feature-icon">🧠</div>
-          <h3>AI Integration</h3>
+        <div class="feature-card glass reveal">
+          <div class="icon">🧠</div>
+          <h3>Built-in AI Tools</h3>
           <p>
-            Access powerful AI tools and workflows directly
-            from a clean unified interface.
+            Keep your AI workflows in one place instead of juggling different apps.
           </p>
         </div>
 
-        <div class="feature-card glass">
-          <div class="feature-icon">🎨</div>
-          <h3>Modern UI</h3>
+        <div class="feature-card glass reveal">
+          <div class="icon">🎨</div>
+          <h3>Clean Interface</h3>
           <p>
-            Beautiful glass-morphism design with custom layouts,
-            transitions, and premium styling.
+            A focused layout designed to feel fast, simple, and easy to use.
           </p>
         </div>
 
-        <div class="feature-card glass">
-          <div class="feature-icon">📂</div>
-          <h3>Workspace Management</h3>
+        <div class="feature-card glass reveal">
+          <div class="icon">📂</div>
+          <h3>Organized Workspace</h3>
           <p>
-            Organize projects, files, prompts, and tools
-            in one centralized dashboard.
+            Manage projects, files, and tools without the usual desktop mess.
           </p>
         </div>
 
-        <div class="feature-card glass">
-          <div class="feature-icon">🔒</div>
-          <h3>Secure & Local</h3>
+        <div class="feature-card glass reveal">
+          <div class="icon">🔒</div>
+          <h3>Runs Locally</h3>
           <p>
-            Your files and workflows stay on your machine
-            with full local control and privacy.
+            Your files stay on your machine with full control over your setup.
           </p>
         </div>
 
-        <div class="feature-card glass">
-          <div class="feature-icon">🖥️</div>
+        <div class="feature-card glass reveal">
+          <div class="icon">🖥️</div>
           <h3>Cross Platform</h3>
           <p>
-            Available on Windows, macOS, and Linux
-            with a consistent desktop experience.
-          </p>
-        </div>
-
-        <div class="feature-card glass">
-          <div class="feature-icon">📊</div>
-          <h3>Live Monitoring</h3>
-          <p>
-            Track processes, activity, and workflows
-            in real time with smooth dashboards.
-          </p>
-        </div>
-
-        <div class="feature-card glass">
-          <div class="feature-icon">🚀</div>
-          <h3>One-Click Launch</h3>
-          <p>
-            Launch tools, tasks, and AI workflows instantly
-            without complicated setup steps.
+            Works across Windows, macOS, and Linux with the same smooth experience.
           </p>
         </div>
 
       </div>
+
     </div>
+
   </section>
 
-  <!-- HOW IT WORKS -->
+  <!-- HOW -->
+
   <section id="how">
+
     <div class="container">
 
-      <div class="section-title">
-        <h2>How It Works</h2>
+      <div class="section-title reveal">
+
+        <h2>
+          Get started in minutes
+        </h2>
 
         <p>
-          Ai Dock is built to be simple, fast, and beginner friendly.
+          No complicated setup process. Just install the app and start working.
         </p>
+
       </div>
 
       <div class="steps">
 
-        <div class="step-card glass">
-          <div class="step-number">1</div>
-          <h3>Download Ai Dock</h3>
+        <div class="step glass reveal">
+
+          <div class="step-number">
+            1
+          </div>
+
+          <h3>
+            Install the app
+          </h3>
 
           <p>
-            Install the desktop app on your operating system
-            in just a few clicks.
+            Download Ai Dock and get everything running in a few clicks.
           </p>
+
         </div>
 
-        <div class="step-card glass">
-          <div class="step-number">2</div>
-          <h3>Customize Your Workspace</h3>
+        <div class="step glass reveal">
+
+          <div class="step-number">
+            2
+          </div>
+
+          <h3>
+            Set up your workspace
+          </h3>
 
           <p>
-            Set up your tools, layouts, and workflows
-            using the clean modern interface.
+            Organize your tools, layouts, and workflows the way you like.
           </p>
+
         </div>
 
-        <div class="step-card glass">
-          <div class="step-number">3</div>
-          <h3>Work Faster</h3>
+        <div class="step glass reveal">
+
+          <div class="step-number">
+            3
+          </div>
+
+          <h3>
+            Start working
+          </h3>
 
           <p>
-            Launch AI tools, manage projects, and stay productive
-            from one organized dashboard.
+            Launch tools faster and keep everything in one focused place.
           </p>
+
         </div>
 
       </div>
+
     </div>
+
   </section>
 
   <!-- REQUIREMENTS -->
+
   <section id="requirements">
+
     <div class="container">
 
-      <div class="section-title">
-        <h2>System Requirements</h2>
+      <div class="section-title reveal">
+
+        <h2>
+          System requirements
+        </h2>
 
         <p>
-          Built for modern systems with lightweight performance
-          and smooth responsiveness.
+          Lightweight, responsive, and built for modern systems.
         </p>
+
       </div>
 
       <div class="requirements">
 
-        <div class="req-card glass">
-          <h3>Windows</h3>
+        <div class="req glass reveal">
+
+          <h3>
+            Windows
+          </h3>
 
           <ul>
-            <li>• Windows 10 or newer</li>
-            <li>• 4GB RAM minimum</li>
-            <li>• Intel / AMD processor</li>
-            <li>• 500MB storage space</li>
+            <li>Windows 10 or newer</li>
+            <li>4GB RAM minimum</li>
+            <li>500MB free storage</li>
           </ul>
+
         </div>
 
-        <div class="req-card glass">
-          <h3>macOS</h3>
+        <div class="req glass reveal">
+
+          <h3>
+            macOS
+          </h3>
 
           <ul>
-            <li>• macOS Monterey or newer</li>
-            <li>• Apple Silicon & Intel supported</li>
-            <li>• 4GB RAM minimum</li>
-            <li>• 500MB storage space</li>
+            <li>Monterey or newer</li>
+            <li>Intel & Apple Silicon</li>
+            <li>4GB RAM minimum</li>
           </ul>
+
         </div>
 
-        <div class="req-card glass">
-          <h3>Linux</h3>
+        <div class="req glass reveal">
+
+          <h3>
+            Linux
+          </h3>
 
           <ul>
-            <li>• Ubuntu / Debian based systems</li>
-            <li>• 4GB RAM minimum</li>
-            <li>• Electron compatible distro</li>
-            <li>• 500MB storage space</li>
+            <li>Ubuntu / Debian based</li>
+            <li>Electron compatible distro</li>
+            <li>4GB RAM minimum</li>
           </ul>
+
         </div>
 
       </div>
+
     </div>
+
   </section>
 
   <!-- CTA -->
-  <section>
-    <div class="container">
-      <div class="cta glass">
 
-        <h2>Start Using Ai Dock Today</h2>
+  <section>
+
+    <div class="container">
+
+      <div class="cta glass reveal">
+
+        <h2>
+          A cleaner way to work
+        </h2>
 
         <p>
-          Experience a modern AI desktop environment designed for speed,
-          simplicity, and productivity.
+          Ai Dock brings your tools and workflows together in one fast, focused desktop experience.
         </p>
 
-        <a href="#" class="btn">
+        <a href="#" class="btn btn-primary">
           Download Ai Dock
         </a>
 
       </div>
+
     </div>
+
   </section>
 
   <!-- FOOTER -->
+
   <footer>
-    <div class="container">
-      © 2026 Ai Dock. All rights reserved.
+
+    <div class="container footer-inner">
+
+      <div class="logo">
+        Ai <span>Dock</span>
+      </div>
+
+      <div class="footer-text">
+        © 2026 Ai Dock. Built for focused workflows.
+      </div>
+
     </div>
+
   </footer>
 
   <script>
-    // Smooth fade-in animation
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          entry.target.animate([
-            {
-              opacity: 0,
-              transform: 'translateY(30px)'
-            },
-            {
-              opacity: 1,
-              transform: 'translateY(0)'
-            }
-          ], {
-            duration: 700,
-            easing: 'ease',
-            fill: 'forwards'
-          });
 
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1
+    // Navbar blur on scroll
+
+    const navbar = document.getElementById("navbar");
+
+    window.addEventListener("scroll", () => {
+      if(window.scrollY > 10){
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
     });
 
-    document.querySelectorAll('.feature-card, .step-card, .req-card, .cta')
-      .forEach(el => observer.observe(el));
+    // Reveal animation
+
+    const reveals = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+
+      entries.forEach(entry => {
+
+        if(entry.isIntersecting){
+          entry.target.classList.add("active");
+        }
+
+      });
+
+    }, {
+      threshold:0.15
+    });
+
+    reveals.forEach(el => observer.observe(el));
+
   </script>
 
 </body>
