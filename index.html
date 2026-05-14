@@ -1,939 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ai Dock</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#050816;
-      --surface:rgba(255,255,255,0.04);
-      --surface-2:rgba(255,255,255,0.06);
-      --border:rgba(255,255,255,0.08);
-      --text:#f8fafc;
-      --muted:#94a3b8;
-      --primary:#3b82f6;
-      --primary-light:#60a5fa;
-      --shadow:0 20px 60px rgba(0,0,0,0.45);
-      --radius:24px;
-      --container:1180px;
-    }
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.15), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(96,165,250,0.08), transparent 25%),
-        var(--bg);
-      color:var(--text);
-      overflow-x:hidden;
-      -webkit-font-smoothing:antialiased;
-    }
-
-    .container{
-      width:100%;
-      max-width:var(--container);
-      margin:auto;
-      padding:0 24px;
-    }
-
-    section{
-      padding:120px 0;
-      position:relative;
-    }
-
-    .glass{
-      background:var(--surface);
-      border:1px solid var(--border);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      box-shadow:var(--shadow);
-    }
-
-    /* NAVBAR */
-
-    nav{
-      position:fixed;
-      top:0;
-      width:100%;
-      z-index:1000;
-      transition:0.3s ease;
-    }
-
-    nav.scrolled{
-      background:rgba(5,8,22,0.75);
-      backdrop-filter:blur(18px);
-      border-bottom:1px solid rgba(255,255,255,0.05);
-    }
-
-    .nav-inner{
-      height:76px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-
-    .logo{
-      font-size:1.15rem;
-      font-weight:700;
-      letter-spacing:-0.04em;
-    }
-
-    .logo span{
-      color:var(--primary);
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:28px;
-    }
-
-    .nav-links a{
-      text-decoration:none;
-      color:var(--muted);
-      font-size:0.95rem;
-      transition:0.25s ease;
-    }
-
-    .nav-links a:hover{
-      color:white;
-    }
-
-    .nav-btn{
-      padding:12px 18px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.08);
-      color:white !important;
-    }
-
-    .nav-btn:hover{
-      background:rgba(255,255,255,0.1);
-    }
-
-    /* HERO */
-
-    .hero{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      padding-top:120px;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:70px;
-      align-items:center;
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 16px;
-      border-radius:999px;
-      margin-bottom:28px;
-      font-size:0.9rem;
-      color:#dbeafe;
-    }
-
-    .badge::before{
-      content:"";
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      background:var(--primary);
-      box-shadow:0 0 14px var(--primary);
-    }
-
-    h1{
-      font-size:clamp(3.5rem,6vw,5.8rem);
-      line-height:0.95;
-      letter-spacing:-0.07em;
-      margin-bottom:26px;
-      max-width:680px;
-    }
-
-    .hero p{
-      color:var(--muted);
-      font-size:1.08rem;
-      line-height:1.9;
-      max-width:620px;
-      margin-bottom:38px;
-    }
-
-    .hero-buttons{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      padding:15px 24px;
-      border-radius:18px;
-      text-decoration:none;
-      font-weight:600;
-      transition:0.3s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .btn-primary{
-      background:linear-gradient(135deg,var(--primary),var(--primary-light));
-      color:white;
-      box-shadow:0 10px 30px rgba(59,130,246,0.35);
-    }
-
-    .btn-primary:hover{
-      transform:translateY(-3px);
-      box-shadow:0 14px 40px rgba(59,130,246,0.5);
-    }
-
-    .btn-secondary{
-      color:white;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .btn-secondary:hover{
-      background:rgba(255,255,255,0.08);
-    }
-
-    /* MOCKUP */
-
-    .mockup{
-      padding:22px;
-      border-radius:30px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .mockup::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-        180deg,
-        rgba(255,255,255,0.04),
-        transparent
-      );
-      pointer-events:none;
-    }
-
-    .window-top{
-      display:flex;
-      gap:10px;
-      margin-bottom:20px;
-    }
-
-    .dot{
-      width:11px;
-      height:11px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.18);
-    }
-
-    .mockup-layout{
-      display:grid;
-      grid-template-columns:220px 1fr;
-      gap:18px;
-    }
-
-    .sidebar{
-      padding:18px;
-      border-radius:22px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.05);
-    }
-
-    .side-item{
-      height:42px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
-      margin-bottom:12px;
-    }
-
-    .side-item.active{
-      background:rgba(59,130,246,0.2);
-      border:1px solid rgba(59,130,246,0.3);
-    }
-
-    .dashboard{
-      padding:18px;
-      border-radius:22px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.05);
-    }
-
-    .dashboard-top{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-      margin-bottom:14px;
-    }
-
-    .mini-card{
-      height:90px;
-      border-radius:18px;
-      background:rgba(255,255,255,0.05);
-    }
-
-    .console{
-      height:260px;
-      border-radius:20px;
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(59,130,246,0.12),
-          rgba(255,255,255,0.03)
-        );
-      border:1px solid rgba(255,255,255,0.05);
-    }
-
-    /* TITLES */
-
-    .section-title{
-      text-align:center;
-      margin-bottom:70px;
-    }
-
-    .section-title h2{
-      font-size:clamp(2.2rem,4vw,3.5rem);
-      letter-spacing:-0.06em;
-      margin-bottom:18px;
-    }
-
-    .section-title p{
-      color:var(--muted);
-      max-width:650px;
-      margin:auto;
-      line-height:1.8;
-    }
-
-    /* FEATURES */
-
-    .features{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:22px;
-    }
-
-    .feature-card{
-      padding:30px;
-      border-radius:24px;
-      transition:0.35s ease;
-    }
-
-    .feature-card:hover{
-      transform:translateY(-6px);
-      border-color:rgba(59,130,246,0.2);
-      background:rgba(255,255,255,0.055);
-    }
-
-    .icon{
-      width:54px;
-      height:54px;
-      border-radius:16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin-bottom:20px;
-      font-size:1.25rem;
-      background:rgba(59,130,246,0.15);
-      border:1px solid rgba(59,130,246,0.2);
-    }
-
-    .feature-card h3{
-      font-size:1.1rem;
-      margin-bottom:12px;
-    }
-
-    .feature-card p{
-      color:var(--muted);
-      line-height:1.7;
-      font-size:0.96rem;
-    }
-
-    /* STEPS */
-
-    .steps{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:22px;
-    }
-
-    .step{
-      padding:34px;
-      border-radius:24px;
-      text-align:center;
-    }
-
-    .step-number{
-      width:66px;
-      height:66px;
-      border-radius:50%;
-      margin:0 auto 22px;
-      background:linear-gradient(
-        135deg,
-        var(--primary),
-        var(--primary-light)
-      );
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      font-size:1.3rem;
-      box-shadow:0 10px 30px rgba(59,130,246,0.35);
-    }
-
-    .step p{
-      margin-top:12px;
-      color:var(--muted);
-      line-height:1.7;
-    }
-
-    /* REQUIREMENTS */
-
-    .requirements{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:22px;
-    }
-
-    .req{
-      padding:28px;
-      border-radius:22px;
-    }
-
-    .req h3{
-      margin-bottom:18px;
-    }
-
-    .req ul{
-      list-style:none;
-    }
-
-    .req li{
-      color:var(--muted);
-      margin-bottom:10px;
-      font-size:0.95rem;
-    }
-
-    /* CTA */
-
-    .cta{
-      padding:70px 40px;
-      border-radius:32px;
-      text-align:center;
-    }
-
-    .cta h2{
-      font-size:clamp(2.3rem,4vw,3.4rem);
-      letter-spacing:-0.05em;
-      margin-bottom:18px;
-    }
-
-    .cta p{
-      max-width:620px;
-      margin:auto auto 30px;
-      color:var(--muted);
-      line-height:1.8;
-    }
-
-    /* FOOTER */
-
-    footer{
-      padding:40px 0;
-      border-top:1px solid rgba(255,255,255,0.05);
-    }
-
-    .footer-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      flex-wrap:wrap;
-    }
-
-    .footer-text{
-      color:var(--muted);
-      font-size:0.92rem;
-    }
-
-    /* ANIMATIONS */
-
-    .reveal{
-      opacity:0;
-      transform:translateY(30px);
-      transition:0.8s ease;
-    }
-
-    .reveal.active{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    /* RESPONSIVE */
-
-    @media(max-width:980px){
-
-      .hero-grid{
-        grid-template-columns:1fr;
-      }
-
-      .mockup-layout{
-        grid-template-columns:1fr;
-      }
-
-      .sidebar{
-        display:none;
-      }
-
-      section{
-        padding:100px 0;
-      }
-    }
-
-    @media(max-width:720px){
-
-      .nav-links{
-        display:none;
-      }
-
-      h1{
-        font-size:3.2rem;
-      }
-
-      .dashboard-top{
-        grid-template-columns:1fr;
-      }
-
-      .hero-buttons{
-        width:100%;
-      }
-
-      .btn{
-        width:100%;
-      }
-
-      .footer-inner{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ai Dock</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050814;
+  --surface:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --blue:#3b82f6;
+  --blue2:#60a5fa;
+  --shadow:0 25px 80px rgba(0,0,0,0.5);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Inter;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(59,130,246,0.18), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(96,165,250,0.12), transparent 40%),
+    var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+.container{
+  max-width:1150px;
+  margin:auto;
+  padding:0 20px;
+}
+
+section{padding:110px 0;}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:1000;
+  transition:.3s;
+}
+
+nav.scrolled{
+  background:rgba(5,8,20,0.75);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.nav-inner{
+  height:72px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{font-weight:700;}
+.logo span{color:var(--blue);}
+
+.links{display:flex;gap:22px;align-items:center;}
+.links a{color:var(--muted);text-decoration:none;font-size:.95rem;}
+.links a:hover{color:white;}
+
+/* BUTTON */
+.btn{
+  padding:12px 18px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:600;
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  color:white;
+  transition:.25s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn.primary{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  border:none;
+  box-shadow:0 10px 30px rgba(59,130,246,0.3);
+}
+
+.btn:hover{transform:translateY(-2px);}
+
+.btn::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:60%;
+  height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.25),transparent);
+  transform:skewX(-20deg);
+}
+
+.btn:hover::after{animation:shine .8s ease;}
+
+@keyframes shine{
+  from{left:-120%;}
+  to{left:220%;}
+}
+
+/* HERO */
+.hero{
+  padding-top:140px;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+h1{
+  font-size:clamp(3rem,6vw,5.5rem);
+  line-height:1;
+  letter-spacing:-0.06em;
+  margin-bottom:18px;
+}
+
+p{color:var(--muted);line-height:1.8;}
+
+.badge{
+  display:inline-flex;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:.85rem;
+  margin-bottom:18px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);
+}
+
+.cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;}
+
+.small{margin-top:10px;font-size:.85rem;color:var(--muted);}
+
+/* MOCKUP */
+.mockup{
+  padding:16px;
+  border-radius:26px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.topbar{display:flex;gap:8px;margin-bottom:12px;}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.15);}
+
+.app{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:12px;
+}
+
+.side{
+  padding:12px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+}
+
+.item{
+  height:34px;
+  margin-bottom:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.05);
+}
+
+.item.active{background:rgba(59,130,246,0.2);}
+
+.main{
+  padding:12px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.card{
+  height:70px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.05);
+}
+
+.log{
+  height:200px;
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(59,130,246,0.12),rgba(255,255,255,0.03));
+}
+
+/* SECTIONS */
+.title{
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.title h2{
+  font-size:clamp(2rem,4vw,3.2rem);
+  margin-bottom:10px;
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;
+}
+
+.box{
+  padding:22px;
+  border-radius:20px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  transition:.25s;
+}
+
+.box:hover{
+  transform:translateY(-6px);
+  border-color:rgba(59,130,246,0.25);
+}
+
+.box h3{margin-bottom:8px;}
+.box p{font-size:.92rem;color:var(--muted);}
+
+/* ANIMATION */
+.reveal{
+  opacity:0;
+  transform:translateY(20px);
+  transition:.8s cubic-bezier(.2,.8,.2,1);
+}
+
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:40px;
+  color:var(--muted);
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr;}
+  .app{grid-template-columns:1fr;}
+  .side{display:none;}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- NAV -->
-
-  <nav id="navbar">
-    <div class="container nav-inner">
-
-      <div class="logo">
-        Ai <span>Dock</span>
-      </div>
-
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-        <a href="#requirements">Requirements</a>
-        <a href="#" class="nav-btn">Download</a>
-      </div>
-
+<nav id="nav">
+  <div class="container nav-inner">
+    <div class="logo">Ai <span>Dock</span></div>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#">Download</a>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <!-- HERO -->
+<!-- HERO -->
+<section class="hero">
+  <div class="container grid">
 
-  <section class="hero">
+    <div class="reveal">
+      <div class="badge">A calmer way to work</div>
 
-    <div class="container hero-grid">
+      <h1>Everything in one place.</h1>
 
-      <div class="reveal">
+      <p>
+        Ai Dock brings your tools, AI features, and daily workflow together in one clean desktop app — so you don’t waste time switching around.
+      </p>
 
-        <div class="badge glass">
-          Built for fast desktop workflows
-        </div>
-
-        <h1>
-          Everything you need.<br>
-          One clean desktop app.
-        </h1>
-
-        <p>
-          Ai Dock keeps your tools, workflows, and AI features in one focused workspace — without the clutter, browser tabs, or complicated setup.
-        </p>
-
-        <div class="hero-buttons">
-
-          <a href="#" class="btn btn-primary">
-            Download for Windows
-          </a>
-
-          <a href="#features" class="btn btn-secondary">
-            View Features
-          </a>
-
-        </div>
-
+      <div class="cta">
+        <a class="btn primary" href="#">Download for Windows</a>
+        <a class="btn" href="#features">Explore features</a>
       </div>
 
-      <div class="mockup glass reveal">
+      <div class="small">
+        macOS — Coming soon • Linux — Coming soon
+      </div>
+    </div>
 
-        <div class="window-top">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
+    <!-- MOCKUP -->
+    <div class="mockup reveal">
+
+      <div class="topbar">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="app">
+
+        <div class="side">
+          <div class="item active"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+
+          <p style="font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.5;">
+            Quick tools you use every day, always one click away.
+          </p>
         </div>
 
-        <div class="mockup-layout">
+        <div class="main">
 
-          <div class="sidebar">
-            <div class="side-item active"></div>
-            <div class="side-item"></div>
-            <div class="side-item"></div>
-            <div class="side-item"></div>
-            <div class="side-item"></div>
+          <div class="cards">
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
           </div>
 
-          <div class="dashboard">
+          <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px;">
+            Your workspace stays organized automatically.
+          </p>
 
-            <div class="dashboard-top">
-              <div class="mini-card"></div>
-              <div class="mini-card"></div>
-              <div class="mini-card"></div>
-            </div>
+          <div class="log"></div>
 
-            <div class="console"></div>
-
-          </div>
+          <p style="font-size:.85rem;color:var(--muted);margin-top:10px;">
+            Live activity updates without opening terminals or extra apps.
+          </p>
 
         </div>
 
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+
+    <div class="title reveal">
+      <h2>Designed to feel effortless</h2>
+      <p>Everything stays simple so you can stay focused.</p>
+    </div>
+
+    <div class="grid3">
+
+      <div class="box reveal">
+        <h3>Instant access</h3>
+        <p>Open anything without searching through folders or menus.</p>
+      </div>
+
+      <div class="box reveal">
+        <h3>Less distraction</h3>
+        <p>Everything you need stays in one calm, organized workspace.</p>
+      </div>
+
+      <div class="box reveal">
+        <h3>Built for focus</h3>
+        <p>Remove clutter so you can actually get work done faster.</p>
       </div>
 
     </div>
 
-  </section>
+  </div>
+</section>
 
-  <!-- FEATURES -->
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
 
-  <section id="features">
+    <div class="title reveal">
+      <h2>Get started in minutes</h2>
+      <p>No setup pain. Just open it and go.</p>
+    </div>
 
-    <div class="container">
+    <div class="grid3">
 
-      <div class="section-title reveal">
-
-        <h2>
-          Designed to stay out of your way
-        </h2>
-
-        <p>
-          Ai Dock gives you a faster and more organized workspace without making things complicated.
-        </p>
-
+      <div class="box reveal">
+        <h3>1. Install Ai Dock</h3>
+        <p>Download and open it like any normal desktop app.</p>
       </div>
 
-      <div class="features">
+      <div class="box reveal">
+        <h3>2. Set up your space</h3>
+        <p>Add your tools and arrange everything how you like it.</p>
+      </div>
 
-        <div class="feature-card glass reveal">
-          <div class="icon">⚡</div>
-          <h3>Quick Launch</h3>
-          <p>
-            Open your tools instantly without digging through folders or tabs.
-          </p>
-        </div>
-
-        <div class="feature-card glass reveal">
-          <div class="icon">🧠</div>
-          <h3>Built-in AI Tools</h3>
-          <p>
-            Keep your AI workflows in one place instead of juggling different apps.
-          </p>
-        </div>
-
-        <div class="feature-card glass reveal">
-          <div class="icon">🎨</div>
-          <h3>Clean Interface</h3>
-          <p>
-            A focused layout designed to feel fast, simple, and easy to use.
-          </p>
-        </div>
-
-        <div class="feature-card glass reveal">
-          <div class="icon">📂</div>
-          <h3>Organized Workspace</h3>
-          <p>
-            Manage projects, files, and tools without the usual desktop mess.
-          </p>
-        </div>
-
-        <div class="feature-card glass reveal">
-          <div class="icon">🔒</div>
-          <h3>Runs Locally</h3>
-          <p>
-            Your files stay on your machine with full control over your setup.
-          </p>
-        </div>
-
-        <div class="feature-card glass reveal">
-          <div class="icon">🖥️</div>
-          <h3>Cross Platform</h3>
-          <p>
-            Works across Windows, macOS, and Linux with the same smooth experience.
-          </p>
-        </div>
-
+      <div class="box reveal">
+        <h3>3. Start working</h3>
+        <p>Launch tools instantly and stay focused without switching apps.</p>
       </div>
 
     </div>
 
-  </section>
-
-  <!-- HOW -->
-
-  <section id="how">
-
-    <div class="container">
-
-      <div class="section-title reveal">
-
-        <h2>
-          Get started in minutes
-        </h2>
-
-        <p>
-          No complicated setup process. Just install the app and start working.
-        </p>
-
-      </div>
-
-      <div class="steps">
-
-        <div class="step glass reveal">
-
-          <div class="step-number">
-            1
-          </div>
-
-          <h3>
-            Install the app
-          </h3>
-
-          <p>
-            Download Ai Dock and get everything running in a few clicks.
-          </p>
-
-        </div>
-
-        <div class="step glass reveal">
-
-          <div class="step-number">
-            2
-          </div>
-
-          <h3>
-            Set up your workspace
-          </h3>
-
-          <p>
-            Organize your tools, layouts, and workflows the way you like.
-          </p>
-
-        </div>
-
-        <div class="step glass reveal">
-
-          <div class="step-number">
-            3
-          </div>
-
-          <h3>
-            Start working
-          </h3>
-
-          <p>
-            Launch tools faster and keep everything in one focused place.
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- REQUIREMENTS -->
-
-  <section id="requirements">
-
-    <div class="container">
-
-      <div class="section-title reveal">
-
-        <h2>
-          System requirements
-        </h2>
-
-        <p>
-          Lightweight, responsive, and built for modern systems.
-        </p>
-
-      </div>
-
-      <div class="requirements">
-
-        <div class="req glass reveal">
-
-          <h3>
-            Windows
-          </h3>
-
-          <ul>
-            <li>Windows 10 or newer</li>
-            <li>4GB RAM minimum</li>
-            <li>500MB free storage</li>
-          </ul>
-
-        </div>
-
-        <div class="req glass reveal">
-
-          <h3>
-            macOS
-          </h3>
-
-          <ul>
-            <li>Monterey or newer</li>
-            <li>Intel & Apple Silicon</li>
-            <li>4GB RAM minimum</li>
-          </ul>
-
-        </div>
-
-        <div class="req glass reveal">
-
-          <h3>
-            Linux
-          </h3>
-
-          <ul>
-            <li>Ubuntu / Debian based</li>
-            <li>Electron compatible distro</li>
-            <li>4GB RAM minimum</li>
-          </ul>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- CTA -->
-
-  <section>
-
-    <div class="container">
-
-      <div class="cta glass reveal">
-
-        <h2>
-          A cleaner way to work
-        </h2>
-
-        <p>
-          Ai Dock brings your tools and workflows together in one fast, focused desktop experience.
-        </p>
-
-        <a href="#" class="btn btn-primary">
-          Download Ai Dock
-        </a>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- FOOTER -->
-
-  <footer>
-
-    <div class="container footer-inner">
-
-      <div class="logo">
-        Ai <span>Dock</span>
-      </div>
-
-      <div class="footer-text">
-        © 2026 Ai Dock. Built for focused workflows.
-      </div>
-
-    </div>
-
-  </footer>
-
-  <script>
-
-    // Navbar blur on scroll
-
-    const navbar = document.getElementById("navbar");
-
-    window.addEventListener("scroll", () => {
-      if(window.scrollY > 10){
-        navbar.classList.add("scrolled");
-      } else {
-        navbar.classList.remove("scrolled");
-      }
-    });
-
-    // Reveal animation
-
-    const reveals = document.querySelectorAll(".reveal");
-
-    const observer = new IntersectionObserver((entries) => {
-
-      entries.forEach(entry => {
-
-        if(entry.isIntersecting){
-          entry.target.classList.add("active");
-        }
-
-      });
-
-    }, {
-      threshold:0.15
-    });
-
-    reveals.forEach(el => observer.observe(el));
-
-  </script>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    © 2026 Ai Dock — built for focused work
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById("nav");
+
+window.addEventListener("scroll",()=>{
+  nav.classList.toggle("scrolled",window.scrollY>10);
+});
+
+const items=document.querySelectorAll(".reveal");
+
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add("active");
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+
+items.forEach(el=>obs.observe(el));
+</script>
 
 </body>
 </html>
